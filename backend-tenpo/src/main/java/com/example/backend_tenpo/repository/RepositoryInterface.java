@@ -7,6 +7,6 @@ import java.util.List;
 public interface RepositoryInterface {
     List<Transaction> findAll();
     Transaction findById(String id);
-    Transaction updateById(String id, Transaction transaction);
+    Transaction saveOrUpdate(Transaction transaction);
     String deleteById(String id);
 }

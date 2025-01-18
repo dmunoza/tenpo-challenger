@@ -9,9 +9,8 @@ import java.util.Date;
 public class Transaction {
 
     @Id()
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private String id;
 
     @Column(name = "amount")
     private int amount;
@@ -19,10 +18,10 @@ public class Transaction {
     @Column(name = "commerce")
     private String commerce;
 
-    @Column(name = "user")
+    @Column(name = "user_tenpo")
     private String user;
 
-    @Column(name = "date")
+    @Column(name = "date_transaction")
     private Date date;
 
     public Transaction() {
@@ -35,10 +34,10 @@ public class Transaction {
         this.date = date;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
     public int getAmount() {

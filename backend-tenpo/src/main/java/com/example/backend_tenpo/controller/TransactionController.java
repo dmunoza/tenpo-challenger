@@ -1,10 +1,12 @@
 package com.example.backend_tenpo.controller;
 
 
+import com.example.backend_tenpo.entity.Transaction;
 import com.example.backend_tenpo.service.TransactionInterface;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping ("/transaction")
@@ -17,23 +19,28 @@ public class TransactionController {
             this.transactionService = thetransactionService;
         }
 
-        @RequestMapping("/get")
-        public String getTransaction(){
-            return transactionService.getTransaction();
+        @GetMapping("/findAll")
+        public List<Transaction> findAll(){
+            return transactionService.findAllTransaction();
         }
 
-        @RequestMapping("/post")
-        public String postTransaction(){
-            return transactionService.postTransaction();
+        @GetMapping("/findById/{id}")
+        public Transaction findById(@RequestParam String id){
+            return transactionService.findTransaction(id);
         }
 
-        @RequestMapping("/put")
-        public String putTransaction(){
-            return transactionService.putTransaction();
+        @PostMapping("/")
+        public String save(@RequestBody Transaction transaction){
+            return transactionService.save(transaction);
         }
 
-        @RequestMapping("/delete")
-        public String deleteTransaction(){
-            return transactionService.deleteTransaction();
+        @PutMapping("/")
+        public Transaction update(@RequestBody Transaction transaction){
+            return transactionService.update(transaction);
+        }
+
+        @DeleteMapping("/{id}")
+        public String delete(@RequestParam String id){
+            return transactionService.delete(id);
         }
 }

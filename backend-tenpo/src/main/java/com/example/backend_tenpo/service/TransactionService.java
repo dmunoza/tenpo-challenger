@@ -17,23 +17,27 @@ public class TransactionService implements TransactionInterface {
         repository = theTransactionRepository;
     }
 
-    @Override
-    public List<Transaction> getTransaction() {
+    public List<Transaction> findAllTransaction() {
         return repository.findAll();
     }
 
-    @Override
-    public String postTransaction() {
-        return "post";
+    public Transaction findTransaction(String id) {
+        return repository.findById(id);
     }
 
-    @Override
-    public String putTransaction() {
-        return "put";
+    public String save(Transaction transaction) {
+        Transaction response = repository.saveOrUpdate(transaction);
+        if (response != null) {
+            return "Saved";
+        }
+        return "Not saved";
     }
 
-    @Override
-    public String deleteTransaction() {
-        return "delete";
+    public Transaction update(Transaction transaction) {
+        return repository.saveOrUpdate(transaction);
+    }
+
+    public String delete(String id) {
+        return repository.deleteById(id);
     }
 }

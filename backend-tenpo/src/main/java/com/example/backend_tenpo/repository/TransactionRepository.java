@@ -26,16 +26,23 @@ public class TransactionRepository implements RepositoryInterface {
 
     @Override
     public Transaction findById(String id) {
-        return null;
+        TypedQuery<Transaction> theQuery = entityManager.createQuery("from Transaction where id = :id", Transaction.class);
+        theQuery.setParameter("id", id);
+        return theQuery.getSingleResult();
     }
 
     @Override
-    public Transaction updateById(String id, Transaction transaction) {
-        return null;
+    public Transaction saveOrUpdate(Transaction transaction) {
+        return entityManager.merge(transaction);
     }
 
     @Override
     public String deleteById(String id) {
-        return "";
+        Transaction transaction = entityManager.find(Transaction.class, id);
+        if (transaction != null) {
+            entityManager.remove(transaction);
+            return "Deleted";
+        }
+        return "Not found";
     }
 }
