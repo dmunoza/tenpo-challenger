@@ -1,5 +1,7 @@
 package com.example.backend_tenpo.util;
 
+import com.example.backend_tenpo.excepton.TooManyRequestException;
+
 import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,7 +37,7 @@ public class RateLimiter {
             return true;
         }
 
-        return false;
+        throw new TooManyRequestException("Too many requests: " + clientId);
     }
 
     private static class RequestInfo {

@@ -25,4 +25,14 @@ public class GlobalException {
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(TooManyRequestException.class)
+    public ResponseEntity<ErrorEntity> handleResourceTooManyRequest(ResourceNotFoundException ex, WebRequest request) {
+        ErrorEntity errorResponse = new ErrorEntity(
+                HttpStatus.TOO_MANY_REQUESTS.value(),
+                ex.getMessage(),
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
 }
