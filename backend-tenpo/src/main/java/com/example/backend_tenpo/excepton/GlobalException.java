@@ -8,7 +8,7 @@ import org.springframework.web.context.request.WebRequest;
 public class GlobalException {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorEntity> handleAllExceptions(Exception ex, WebRequest request) {
-        ErrorResponse errorResponse = new ErrorEntity(
+        ErrorEntity errorResponse = new ErrorEntity(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 ex.getMessage(),
                 System.currentTimeMillis()
@@ -17,8 +17,8 @@ public class GlobalException {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(
+    public ResponseEntity<ErrorEntity> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+        ErrorEntity errorResponse = new ErrorEntity(
                 HttpStatus.NOT_FOUND.value(),
                 ex.getMessage(),
                 System.currentTimeMillis()
