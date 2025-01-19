@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TransactionService implements TransactionInterface {
@@ -21,7 +22,7 @@ public class TransactionService implements TransactionInterface {
         return repository.findAll();
     }
 
-    public Transaction findTransaction(String id) {
+    public Transaction findTransaction(UUID id) {
         return repository.findById(id);
     }
 
@@ -37,7 +38,7 @@ public class TransactionService implements TransactionInterface {
         return repository.saveOrUpdate(transaction);
     }
 
-    public String delete(String id) {
+    public String delete(UUID id) {
         return repository.deleteById(id);
     }
 }

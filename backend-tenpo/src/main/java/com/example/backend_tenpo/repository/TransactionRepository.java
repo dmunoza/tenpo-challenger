@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class TransactionRepository implements RepositoryInterface {
@@ -25,10 +26,10 @@ public class TransactionRepository implements RepositoryInterface {
     }
 
     @Override
-    public Transaction findById(String id) {
-        TypedQuery<Transaction> theQuery = entityManager.createQuery("from Transaction where id = :id", Transaction.class);
-        theQuery.setParameter("id", id);
-        return theQuery.getSingleResult();
+    public Transaction findById(UUID id) {
+        //TypedQuery<Transaction> theQuery = entityManager.createQuery("from Transaction where id = :id", Transaction.class);
+        //theQuery.setParameter("id", id);
+        return entityManager.find(Transaction.class, id);
     }
 
     @Override
@@ -37,7 +38,7 @@ public class TransactionRepository implements RepositoryInterface {
     }
 
     @Override
-    public String deleteById(String id) {
+    public String deleteById(UUID id) {
         Transaction transaction = entityManager.find(Transaction.class, id);
         if (transaction != null) {
             entityManager.remove(transaction);

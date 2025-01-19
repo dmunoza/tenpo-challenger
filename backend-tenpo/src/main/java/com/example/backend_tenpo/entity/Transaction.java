@@ -2,7 +2,8 @@ package com.example.backend_tenpo.entity;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Table(name = "transaction")
@@ -10,7 +11,7 @@ public class Transaction {
 
     @Id()
     @Column(name = "id")
-    private String id;
+    UUID id;
 
     @Column(name = "amount")
     private int amount;
@@ -22,47 +23,47 @@ public class Transaction {
     private String user;
 
     @Column(name = "date_transaction")
-    private Date date;
+    private LocalDate date;
 
     public Transaction() {
     }
 
-    public Transaction(int amount, String commerce, String user, Date date) {
+    public Transaction(int amount, String commerce, String user, LocalDate date) {
         this.amount = amount;
         this.commerce = commerce;
         this.user = user;
         this.date = date;
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
     public int getAmount() {
         return amount;
     }
-    public void setAmount() {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 
     public String getCommerce() {
         return commerce;
     }
-    public void setCommerce() {
+    public void setCommerce(String commerce) {
         this.commerce = commerce;
     }
     public String getUser() {
         return user;
     }
-    public void setUser() {
+    public void setUser(String user) {
         this.user = user;
     }
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
-    public void setDate() {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 }
