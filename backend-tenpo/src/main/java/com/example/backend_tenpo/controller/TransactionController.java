@@ -1,14 +1,19 @@
 package com.example.backend_tenpo.controller;
 
-
+import com.example.backend_tenpo.config.DateTimeConverter;
+import com.example.backend_tenpo.dto.TransactionDto;
+import com.example.backend_tenpo.dto.TransactionUpdateDto;
 import com.example.backend_tenpo.entity.Transaction;
 import com.example.backend_tenpo.excepton.ResourceNotFoundException;
 import com.example.backend_tenpo.service.TransactionInterface;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,16 +52,17 @@ public class TransactionController {
         }
 
         @PostMapping("/")
-        public String save(@RequestBody Transaction transaction){
+        public String save(@Valid @RequestBody TransactionDto transactionDTO){
             try {
-                return transactionService.save(transaction);
+                return transactionService.save(transactionDTO);
             } catch (Exception e) {
+                System.out.println(e);
                 throw new RuntimeException("Error al guardar la transacción", e);
             }
         }
 
         @PutMapping("/")
-        public Transaction update(@RequestBody Transaction transaction){
+        public Transaction update(@RequestBody TransactionUpdateDto transaction){
             try {
                 return transactionService.update(transaction);
             } catch (Exception e) {

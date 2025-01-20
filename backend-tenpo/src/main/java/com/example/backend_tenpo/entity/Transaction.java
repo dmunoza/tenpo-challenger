@@ -1,8 +1,8 @@
 package com.example.backend_tenpo.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -23,12 +23,12 @@ public class Transaction {
     private String user;
 
     @Column(name = "date_transaction")
-    private LocalDate date;
+    private LocalDateTime date;
 
     public Transaction() {
     }
 
-    public Transaction(int amount, String commerce, String user, LocalDate date) {
+    public Transaction(int amount, String commerce, String user, LocalDateTime date) {
         this.amount = amount;
         this.commerce = commerce;
         this.user = user;
@@ -60,10 +60,10 @@ public class Transaction {
     public void setUser(String user) {
         this.user = user;
     }
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 }

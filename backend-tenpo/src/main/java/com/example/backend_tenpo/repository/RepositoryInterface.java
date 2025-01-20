@@ -8,6 +8,8 @@ import java.util.UUID;
 public interface RepositoryInterface {
     List<Transaction> findAll();
     Transaction findById(UUID id);
-    Transaction saveOrUpdate(Transaction transaction);
+    String save(Transaction transaction);
+    Transaction update(Transaction transaction);
     String deleteById(UUID id);
+    long countTransactionsByUser(String clientId);
 }
