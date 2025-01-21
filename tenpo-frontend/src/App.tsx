@@ -1,34 +1,25 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import {useState} from 'react'
 import './App.css'
+import TransactionForm from "./components/TransactionForm.tsx";
+import TransactionsTable from "./components/TransactionTable.tsx";
+import Transaction from "./interfaces/transactionsInterfaces.ts";
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
 
+    const handleTransactionAdded = (newTransaction: Transaction) => {
+        setTransactions([...transactions, newTransaction]);
+    };
+    const handleEditTransaction = (transaction: Transaction) => {
+        setSelectedTransaction(transaction);
+    };
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      <>
+          <h2>Transacciones</h2>
+          <TransactionForm onTransactionAdded={handleTransactionAdded} selectedTransaction={selectedTransaction}/>
+          <TransactionsTable onEditTransaction={handleEditTransaction}/>
+      </>
   )
 }
 
