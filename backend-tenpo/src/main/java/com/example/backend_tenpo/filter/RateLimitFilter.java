@@ -3,7 +3,6 @@ package com.example.backend_tenpo.filter;
 import com.example.backend_tenpo.util.RateLimiter;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -14,7 +13,7 @@ import java.io.IOException;
 
 
 public class RateLimitFilter implements Filter {
-    private final RateLimiter rateLimiter = new RateLimiter(3, 60000);
+    private final RateLimiter rateLimiter = new RateLimiter(10, 60000);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

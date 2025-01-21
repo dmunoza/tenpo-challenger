@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { addTransaction, updateTransaction } from "../services/api.ts";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Transaction from "../interfaces/transactionsInterfaces.ts";
 import { useQueryClient } from "@tanstack/react-query";
+import { TextField, Button, Grid2, Paper } from '@mui/material';
 interface TransactionFormProps {
     onTransactionAdded: (transaction: Transaction) => void;
     selectedTransaction: Transaction | null;
@@ -66,31 +67,63 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ onTransactionAdded, s
             onSubmit={handleSubmit}
             enableReinitialize
         >
-            {({ isSubmitting }) => (
+            {({ isSubmitting, handleChange, values }) => (
                 <Form>
-                    <div>
-                        <label>Monto:</label>
-                        <Field type="number" name="amount" />
-                        <ErrorMessage name="amount" component="div" />
-                    </div>
-                    <div>
-                        <label>Comercio:</label>
-                        <Field type="text" name="commerce" />
-                        <ErrorMessage name="commerce" component="div" />
-                    </div>
-                    <div>
-                        <label>Usuario:</label>
-                        <Field type="text" name="user" />
-                        <ErrorMessage name="user" component="div" />
-                    </div>
-                    <div>
-                        <label>Fecha:</label>
-                        <Field type="datetime-local" name="dateTransaction" />
-                        <ErrorMessage name="dateTransaction" component="div" />
-                    </div>
-                    <button type="submit" disabled={isSubmitting}>
-                        {isEditing ? "Editar Transacción" : "Agregar Transacción"}
-                    </button>
+                    <Paper style={{ padding: 16 }}>
+                        <Grid2 container spacing={2}>
+                            <Grid2 item xs={15}>
+                                <TextField
+                                    fullWidth
+                                    label="Amount"
+                                    name="amount"
+                                    type="number"
+                                    value={values.amount}
+                                    onChange={handleChange}
+                                    error={!!(values.amount && values.amount <= 0)}
+                                    helperText={<ErrorMessage name="amount" />}
+                                />
+                            </Grid2>
+                            <Grid2 item xs={15}>
+                                <TextField
+                                    fullWidth
+                                    label="Commerce"
+                                    name="commerce"
+                                    value={values.commerce}
+                                    onChange={handleChange}
+                                    error={!!(values.commerce && values.commerce === "")}
+                                    helperText={<ErrorMessage name="commerce" />}
+                                />
+                            </Grid2>
+                            <Grid2 item xs={15}>
+                                <TextField
+                                    fullWidth
+                                    label="User"
+                                    name="user"
+                                    value={values.user}
+                                    onChange={handleChange}
+                                    error={!!(values.user && values.user === "")}
+                                    helperText={<ErrorMessage name="user" />}
+                                />
+                            </Grid2>
+                            <Grid2 item xs={15}>
+                                <TextField
+                                    fullWidth
+                                    label="Date"
+                                    name="dateTransaction"
+                                    type="datetime-local"
+                                    value={values.dateTransaction}
+                                    onChange={handleChange}
+                                    error={!!(values.dateTransaction && new Date(values.dateTransaction) > new Date())}
+                                    helperText={<ErrorMessage name="dateTransaction" />}
+                                />
+                            </Grid2>
+                            <Grid2 item xs={15}>
+                                <Button type="submit" variant="contained" color="primary" disabled={isSubmitting}>
+                                    {isEditing ? "Edit Transaction" : "Add Transaction"}
+                                </Button>
+                            </Grid2>
+                        </Grid2>
+                    </Paper>
                 </Form>
             )}
         </Formik>

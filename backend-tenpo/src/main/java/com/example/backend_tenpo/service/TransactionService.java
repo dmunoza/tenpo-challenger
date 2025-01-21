@@ -25,7 +25,11 @@ public class TransactionService implements TransactionInterface {
     }
 
     public Transaction findTransaction(UUID id) {
-        return repository.findById(id);
+        Transaction transaction = repository.findById(id);
+        if (transaction == null) {
+            throw new ResourceNotFoundException("Transaction not found with id: " + id);
+        }
+        return transaction;
     }
 
     public String save(TransactionDto transaction) {
@@ -38,7 +42,7 @@ public class TransactionService implements TransactionInterface {
             entity.setId(UUID.randomUUID());
             entity.setAmount(transaction.getAmount());
             entity.setCommerce(transaction.getCommerce());
-            entity.setDate(transaction.getDateTransaction());
+            entity.setDateTransaction(transaction.getDateTransaction());
             entity.setUser(transaction.getUser());
 
             String response = repository.save(entity);
@@ -74,12 +78,16 @@ public class TransactionService implements TransactionInterface {
         }
 
         if (transaction.getDateTransaction() != null) {
-            existingTransaction.setDate(transaction.getDateTransaction());
+            existingTransaction.setDateTransaction(transaction.getDateTransaction());
         }
         return repository.update(existingTransaction);
     }
 
     public String delete(UUID id) {
+        Transaction transaction = repository.findById(id);
+        if (transaction == null) {
+            throw new ResourceNotFoundException("Transaccion no encontrada id: " + id);
+        }
         return repository.deleteById(id);
     }
 }

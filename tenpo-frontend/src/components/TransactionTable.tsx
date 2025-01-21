@@ -4,6 +4,7 @@ import {deleteTransaction, fetchTransactions} from "../services/api.ts";
 import Transaction from "../interfaces/transactionsInterfaces.ts";
 import moment from "moment";
 import queryClient from "../queryClient.ts";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 interface TransactionsTableProps {
     onEditTransaction: (transaction: Transaction) => void;
 }
@@ -18,34 +19,33 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({ onEditTransaction
         await queryClient.invalidateQueries({ queryKey: ["transactions"] });
     }
     return (
-        <table border={1}>
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Monto</th>
-                <th>Comercio</th>
-                <th>Usuario</th>
-                <th>Fecha</th>
-            </tr>
-            </thead>
-            <tbody>
-            {data.map((tx: any) => (
-                <tr key={tx.id}>
-                    <td>{tx.id}</td>
-                    <td>{tx.amount}</td>
-                    <td>{tx.commerce}</td>
-                    <td>{tx.user}</td>
-                    <td>{moment(tx.dateTransaction).format("YYYY-MM-DD HH:mm")}</td>
-                    <td>
-                        <button onClick={() => onEditTransaction(tx)}>Editar</button>
-                    </td>
-                    <td>
-                        <button onClick={() => onDeleteTransaction(tx.id)}>Eliminar</button>
-                    </td>
-                </tr>
-            ))}
-            </tbody>
-        </table>
+        <TableContainer component={Paper}>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Amount</TableCell>
+                        <TableCell>Commerce</TableCell>
+                        <TableCell>User</TableCell>
+                        <TableCell>Date</TableCell>
+                        <TableCell>Actions</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {data.map((tx: Transaction) => (
+                        <TableRow key={tx.id}>
+                            <TableCell>{tx.amount}</TableCell>
+                            <TableCell>{tx.commerce}</TableCell>
+                            <TableCell>{tx.user}</TableCell>
+                            <TableCell>{moment(tx.dateTransaction).format("YYYY-MM-DD HH:mm")}</TableCell>
+                            <TableCell>
+                                <Button onClick={() => onEditTransaction(tx)}>Edit</Button>
+                                <Button onClick={() => onDeleteTransaction(tx.id)}>Delete</Button>
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
     );
 };
 

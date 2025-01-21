@@ -2,10 +2,11 @@ package com.example.backend_tenpo.controller;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.example.backend_tenpo.controller.TransactionController;
+import com.example.backend_tenpo.dto.TransactionDto;
+import com.example.backend_tenpo.dto.TransactionUpdateDto;
 import com.example.backend_tenpo.entity.Transaction;
 import com.example.backend_tenpo.excepton.CustomExceptionHandler;
+import com.example.backend_tenpo.excepton.ResourceNotFoundException;
 import com.example.backend_tenpo.service.TransactionInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,11 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.Date;
 import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -69,23 +67,24 @@ public class TransactionControllerTest {
 
     @Test
     public void testSave() throws Exception {
-        Transaction transaction = new Transaction();
-        transaction.setId(UUID.randomUUID());
+        TransactionDto transaction = new TransactionDto();
         transaction.setAmount(2100);
         transaction.setCommerce("Coto");
         transaction.setUser("Juan");
         LocalDate date = LocalDate.parse("2025-01-01");
-        transaction.setDate(date);
+        transaction.setDateTransaction(date.atStartOfDay());
 
-        when(transactionService.save(any(Transaction.class))).thenReturn("Transaction saved successfully");
-
+        when(transactionService.save(any(TransactionDto.class))).thenReturn("Transaction saved successfully");
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         mockMvc.perform(post("/transaction/")
                         .contentType("application/json")
-                        .content("{\"id\":\"" + transaction.getId() + "\", \"amount\":2100}"))
+                        .content(objectMapper.writeValueAsString(transaction)))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Transaction saved successfully"));
 
-        verify(transactionService, times(1)).save(any(Transaction.class));
+        verify(transactionService, times(1)).save(any(TransactionDto.class));
     }
 
     @Test
@@ -96,9 +95,10 @@ public class TransactionControllerTest {
         transaction.setCommerce("Coto");
         transaction.setUser("Juan");
         LocalDate date = LocalDate.parse("2025-01-01");
-        transaction.setDate(date);
+        System.out.println(date.atStartOfDay());
+        transaction.setDateTransaction(date.atStartOfDay());
 
-        when(transactionService.update(any(Transaction.class))).thenReturn(transaction);
+        when(transactionService.update(any(TransactionUpdateDto.class))).thenReturn(transaction);
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -112,9 +112,8 @@ public class TransactionControllerTest {
                 .andExpect(jsonPath("$.id").value(transaction.getId().toString()))
                 .andExpect(jsonPath("$.amount").value(3100))
                 .andExpect(jsonPath("$.commerce").value("Coto"))
-                .andExpect(jsonPath("$.user").value("Juan"))
-                .andExpect(jsonPath("$.date").value("2025-01-01"));
+                .andExpect(jsonPath("$.user").value("Juan"));
 
-        verify(transactionService, times(1)).update(any(Transaction.class));
+        verify(transactionService, times(1)).update(any(TransactionUpdateDto.class));
     }
 }

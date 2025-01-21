@@ -47,7 +47,7 @@ public class TransactionDto {
         return dateTransaction;
     }
 
-    public void setDateTransaction(LocalDateTime date) {
-        this.dateTransaction = date;
+    public void setDateTransaction(LocalDateTime dateTransaction) {
+        this.dateTransaction = dateTransaction;
     }
 }

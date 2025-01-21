@@ -23,16 +23,16 @@ public class Transaction {
     private String user;
 
     @Column(name = "date_transaction")
-    private LocalDateTime date;
+    private LocalDateTime dateTransaction;
 
     public Transaction() {
     }
 
-    public Transaction(int amount, String commerce, String user, LocalDateTime date) {
+    public Transaction(int amount, String commerce, String user, LocalDateTime dateTransaction) {
         this.amount = amount;
         this.commerce = commerce;
         this.user = user;
-        this.date = date;
+        this.dateTransaction = dateTransaction;
     }
 
     public UUID getId() {
@@ -60,10 +60,10 @@ public class Transaction {
     public void setUser(String user) {
         this.user = user;
     }
-    public LocalDateTime getDate() {
-        return date;
+    public LocalDateTime getDateTransaction() {
+        return dateTransaction;
     }
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setDateTransaction(LocalDateTime dateTransaction) {
+        this.dateTransaction = dateTransaction;
     }
 }
