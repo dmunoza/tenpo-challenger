@@ -28,7 +28,6 @@ public class TransactionController {
         @GetMapping("/findAll")
         public List<Transaction> findAll(){
             try {
-                log.info("Buscando transacciónes");
                 return transactionService.findAllTransaction();
             } catch (Exception e) {
                 throw new RuntimeException("Error al obtener todas las transacciones", e);

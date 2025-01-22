@@ -57,8 +57,6 @@ public class TransactionService implements TransactionInterface {
 
     public Transaction update(TransactionUpdateDto transaction) {
         Transaction existingTransaction = repository.findById(transaction.getId());
-        System.out.println("UPDATE TRANSACTION");
-
         if (existingTransaction == null) {
             throw new ResourceNotFoundException("Transaccion no encontrada id: " + transaction.getId());
         }

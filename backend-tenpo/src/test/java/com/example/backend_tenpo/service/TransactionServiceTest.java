@@ -123,22 +123,24 @@ public class TransactionServiceTest {
     @Test
     public void delete_ShouldReturnDeleted_WhenTransactionExists() {
         UUID id = UUID.randomUUID();
+        Transaction transaction = new Transaction();
+        when(transactionRepository.findById(id)).thenReturn(transaction);
         when(transactionRepository.deleteById(id)).thenReturn("Deleted");
 
         String result = transactionService.delete(id);
 
         assertEquals("Deleted", result);
+        verify(transactionRepository, times(1)).findById(id);
         verify(transactionRepository, times(1)).deleteById(id);
     }
 
     @Test
-    public void delete_ShouldReturnNotFound_WhenTransactionDoesNotExist() {
+    public void delete_ShouldThrowException_WhenTransactionDoesNotExist() {
         UUID id = UUID.randomUUID();
-        when(transactionRepository.deleteById(id)).thenReturn("Not found");
+        when(transactionRepository.findById(id)).thenReturn(null);
 
-        String result = transactionService.delete(id);
-
-        assertEquals("Not found", result);
-        verify(transactionRepository, times(1)).deleteById(id);
+        assertThrows(ResourceNotFoundException.class, () -> transactionService.delete(id));
+        verify(transactionRepository, times(1)).findById(id);
+        verify(transactionRepository, never()).deleteById(id);
     }
 }
