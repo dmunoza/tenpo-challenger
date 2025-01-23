@@ -11,7 +11,6 @@ interface TransactionsTableProps {
 
 const TransactionsTable: React.FC<TransactionsTableProps> = ({ onEditTransaction }) => {
     const { data, isLoading, isError } = useQuery({queryKey: ["transactions"], queryFn: fetchTransactions})
-    console.log(data);
     if (isLoading) return <p>Cargando transacciones...</p>;
     if (isError) return <p>Error al cargar las transacciones</p>;
     const onDeleteTransaction = async (id: string) => {

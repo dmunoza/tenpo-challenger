@@ -8,7 +8,6 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=prod
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/tenpo
       - SPRING_DATASOURCE_USERNAME=tenpo_user
       - SPRING_DATASOURCE_PASSWORD=tenpo_password
@@ -18,18 +17,17 @@ services:
       - tenpo-network
 
   frontend:
-    image: node:20.12
-    container_name: tenpo-frontend
     build:
       context: ./tenpo-frontend
       dockerfile: Dockerfile
+    container_name: tenpo-frontend
     ports:
-      - "5173:5173"
+      - "80:80"
     networks:
       - tenpo-network
 
   db:
-    image: postgres:latest
+    image: postgres:13
     container_name: tenpo-db
     environment:
       - POSTGRES_DB=tenpo
@@ -39,7 +37,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - tenpo-network
 

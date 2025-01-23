@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { addTransaction, updateTransaction } from "../services/api.ts";
-import { Formik, Form, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import Transaction from "../interfaces/transactionsInterfaces.ts";
 import { useQueryClient } from "@tanstack/react-query";
-import { TextField, Button, Grid2, Paper } from '@mui/material';
+import { TextField, Button, Grid, Paper } from '@mui/material';
+
 interface TransactionFormProps {
     onTransactionAdded: (transaction: Transaction) => void;
     selectedTransaction: Transaction | null;
@@ -37,21 +38,24 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ onTransactionAdded, s
         }
     }, [selectedTransaction]);
 
-    const handleSubmit = async (values: Transaction, { setSubmitting, resetForm }: any) => {
+    const handleSubmit = async (values: Transaction, { setSubmitting, resetForm }: FormikHelpers<Transaction>) => {
         try {
             if (selectedTransaction) {
-                const response = await updateTransaction(values.id, values);
+                const response = await updateTransaction(values);
                 onTransactionAdded(response.data);
             } else {
                 const response = await addTransaction(values);
                 onTransactionAdded(response.data);
             }
             resetForm();
-            setTransaction({id: "",
+            setTransaction({
+                id: "",
                 amount: 0,
                 commerce: "",
                 user: "",
-                dateTransaction: new Date()});
+                dateTransaction: new Date(),
+            });
+            setIsEditing(false);
             await queryClient.invalidateQueries({ queryKey: ["transactions"] });
         } catch (error) {
             console.error("Error al agregar o editar la transacción:", error);
@@ -70,8 +74,8 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ onTransactionAdded, s
             {({ isSubmitting, handleChange, values }) => (
                 <Form>
                     <Paper style={{ padding: 16 }}>
-                        <Grid2 container spacing={2}>
-                            <Grid2 item xs={15}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
                                 <TextField
                                     fullWidth
                                     label="Amount"
@@ -82,8 +86,8 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ onTransactionAdded, s
                                     error={!!(values.amount && values.amount <= 0)}
                                     helperText={<ErrorMessage name="amount" />}
                                 />
-                            </Grid2>
-                            <Grid2 item xs={15}>
+                            </Grid>
+                            <Grid item xs={12}>
                                 <TextField
                                     fullWidth
                                     label="Commerce"
@@ -93,8 +97,8 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ onTransactionAdded, s
                                     error={!!(values.commerce && values.commerce === "")}
                                     helperText={<ErrorMessage name="commerce" />}
                                 />
-                            </Grid2>
-                            <Grid2 item xs={15}>
+                            </Grid>
+                            <Grid item xs={12}>
                                 <TextField
                                     fullWidth
                                     label="User"
@@ -104,8 +108,8 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ onTransactionAdded, s
                                     error={!!(values.user && values.user === "")}
                                     helperText={<ErrorMessage name="user" />}
                                 />
-                            </Grid2>
-                            <Grid2 item xs={15}>
+                            </Grid>
+                            <Grid item xs={12}>
                                 <TextField
                                     fullWidth
                                     label="Date"
@@ -116,13 +120,13 @@ const TransactionForm: React.FC<TransactionFormProps> = ({ onTransactionAdded, s
                                     error={!!(values.dateTransaction && new Date(values.dateTransaction) > new Date())}
                                     helperText={<ErrorMessage name="dateTransaction" />}
                                 />
-                            </Grid2>
-                            <Grid2 item xs={15}>
+                            </Grid>
+                            <Grid item xs={12}>
                                 <Button type="submit" variant="contained" color="primary" disabled={isSubmitting}>
                                     {isEditing ? "Edit Transaction" : "Add Transaction"}
                                 </Button>
-                            </Grid2>
-                        </Grid2>
+                            </Grid>
+                        </Grid>
                     </Paper>
                 </Form>
             )}

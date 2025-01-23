@@ -1,9 +1,8 @@
-FROM openjdk:11-jre-slim
+FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-COPY target/backend-tenpo.jar /app/backend-tenpo.jar
+COPY target/*.jar app.jar
 
 EXPOSE 8080
-
-ENTRYPOINT ["java", "-jar", "backend-tenpo.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

@@ -20,9 +20,8 @@ export const addTransaction = async (transaction: {
     return data;
 };
 
-export const updateTransaction = async (id: string, transaction: Transaction) => {
+export const updateTransaction = async (transaction: Transaction) => {
     const body = {
-        id,
         ...transaction
     }
     const { data } = await api.put(`/`, body);

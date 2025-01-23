@@ -60,7 +60,6 @@ public class TransactionService implements TransactionInterface {
         if (existingTransaction == null) {
             throw new ResourceNotFoundException("Transaccion no encontrada id: " + transaction.getId());
         }
-        boolean updated = false;
         System.out.println(transaction);
 
         if (transaction.getAmount() != null) {
